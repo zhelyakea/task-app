@@ -1,4 +1,6 @@
-import App, { AuthContext } from "./App";
+import App from "./App";
+import logic from "./appLogic";
+import AuthContext from "./AuthContext";
 
 export { AuthContext };
-export default App;
+export default logic(App);

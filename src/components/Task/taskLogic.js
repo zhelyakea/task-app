@@ -38,7 +38,6 @@ const TaskLogic = WrappedTaskComponent =>
       this.setState({ task: e.target.value });
     };
     render() {
-      console.log(this.context);
       const {
         state: { checked },
         checkTaskHandler,

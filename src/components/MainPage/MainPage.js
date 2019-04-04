@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useContext } from "react";
 import PropTypes from "prop-types";
+import { AuthContext } from "components/App";
 
 import history from "services/history";
 
@@ -10,10 +11,12 @@ import Tasks from "components/Tasks";
 
 import styles from "./styles";
 
-const MainPage = ({ isAdmin, setIsAdmin }) => {
+const MainPage = () => {
+  const { logOut } = useContext(AuthContext);
   const logOutHandler = () => {
-    setIsAdmin(false);
+    logOut();
   };
+
   const toAuthHandler = () => {
     history.push({
       pathname: "/auth"
@@ -21,6 +24,7 @@ const MainPage = ({ isAdmin, setIsAdmin }) => {
   };
 
   const renderLoginButton = function() {
+    const { isAdmin } = useContext(AuthContext);
     if (isAdmin) {
       return (
         <Button variant="contained" color="secondary" onClick={logOutHandler}>
@@ -44,9 +48,9 @@ const MainPage = ({ isAdmin, setIsAdmin }) => {
   );
 };
 
-MainPage.propTypes = {
+MainPage.contextType = {
   isAdmin: PropTypes.bool,
-  setIsAdmin: PropTypes.func
+  logOut: PropTypes.func
 };
 
 export default MainPage;

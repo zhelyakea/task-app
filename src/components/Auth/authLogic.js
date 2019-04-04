@@ -3,7 +3,7 @@ import history from "services/history";
 import { AuthContext } from "components/App";
 
 const AuthLogic = WrappedComponent => () => {
-  const { setIsAdmin } = useContext(AuthContext);
+  const { logIn } = useContext(AuthContext);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -12,6 +12,7 @@ const AuthLogic = WrappedComponent => () => {
       pathname: "/"
     });
   }, []);
+
   const enterNameHandler = useCallback(e => {
     setUsername(e.target.value);
   }, []);
@@ -22,7 +23,7 @@ const AuthLogic = WrappedComponent => () => {
 
   const authHandler = useCallback(() => {
     if (username === "admin" && password === "123") {
-      setIsAdmin(true);
+      logIn();
       history.push({
         pathname: "/"
       });
