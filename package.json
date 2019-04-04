@@ -6,7 +6,6 @@
     "@material-ui/core": "^3.9.2",
     "@material-ui/icons": "^3.0.2",
     "axios": "^0.18.0",
-    "connected-react-router": "^6.3.2",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-config-prettier": "^4.1.0",
     "eslint-config-react-app": "^3.0.8",
@@ -22,11 +21,8 @@
     "react": "^16.8.5",
     "react-dom": "^16.8.5",
     "react-final-form": "^4.1.0",
-    "react-redux": "^6.0.1",
     "react-router-dom": "^5.0.0",
-    "react-scripts": "2.1.8",
-    "redux": "^4.0.1",
-    "redux-act": "^1.7.4"
+    "react-scripts": "2.1.8"
   },
   "scripts": {
     "start": "NODE_PATH=src react-scripts start",

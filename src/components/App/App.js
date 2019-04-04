@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { HashRouter, Route, Switch } from "react-router-dom";
 
 import { AuthContext } from "./";
@@ -35,4 +36,9 @@ const App = ({ isAdmin, logIn, logOut }) => {
   );
 };
 
+App.propTypes = {
+  isAdmin: PropTypes.bool,
+  logIn: PropTypes.func,
+  logOut: PropTypes.func
+};
 export default App;
