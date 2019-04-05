@@ -1,2 +1,2 @@
-export const LOG_IN = { type: "LOG_IN" };
-export const LOG_OUT = { type: "LOG_OUT" };
+export const LOG_IN = "LOG_IN";
+export const LOG_OUT = "LOG_OUT";

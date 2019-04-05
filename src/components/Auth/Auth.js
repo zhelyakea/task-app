@@ -25,7 +25,7 @@ const Auth = ({
   return (
     <div style={styles.mainWrapper}>
       <div style={styles.logOutWrapper}>
-        <Button variant="contained" color="secondary" onClick={toMainHandler}>
+        <Button variant="contained" color="primary" onClick={toMainHandler}>
           To Main
         </Button>
       </div>

@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useContext } from "react";
 import history from "services/history";
+import { saveState } from "services/localStorage";
 import { AuthContext } from "components/App";
 
 const AuthLogic = WrappedComponent => () => {
@@ -24,6 +25,7 @@ const AuthLogic = WrappedComponent => () => {
   const authHandler = useCallback(() => {
     if (username === "admin" && password === "123") {
       logIn();
+      saveState("isAdmin", true);
       history.push({
         pathname: "/"
       });

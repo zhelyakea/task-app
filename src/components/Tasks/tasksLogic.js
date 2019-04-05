@@ -1,5 +1,5 @@
 import React, { Component, createContext } from "react";
-import { get } from "services/fetch";
+import { get, post } from "services/fetch";
 import getDeveloperNameQuery from "helpers/getDeveloperNameQuery";
 import pageResolver from "helpers/pageResolver";
 import Loading from "components/Loading";
@@ -36,12 +36,20 @@ const AppLogic = WrappedComponent =>
         //   `${getDeveloperNameQuery("Egor")}${pageResolver(page)}${query}`
         // );
         const {
-          status,
-          message: { tasks, total_task_count }
-        } = tasksList;
+          tasksList: {
+            status,
+            message: { tasks, total_task_count }
+          }
+        } = await post(`/tasks`, JSON.stringify({ data: "data" }));
+        // console.log(data);
+        // const {
+        //   status,
+        //   message: { tasks, total_task_count }
+        // } = tasksList;
         // const status = "ok";
         // const tasks = [];
         // const total_task_count = 0;
+        console.log(status);
 
         if (status === "ok") {
           this.setState({

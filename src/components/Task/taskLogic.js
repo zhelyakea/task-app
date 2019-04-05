@@ -12,17 +12,18 @@ const TaskLogic = WrappedTaskComponent =>
         state: { checked, task },
         props: { id }
       } = this;
-      const keys = ["text", "status"];
+      // const keys = ["text", "status"];
 
-      const editTaskFormData = getQueryToEdit({
-        keys,
-        data: { text: task, status: Number(checked) }
-      });
+      // const editTaskFormData = getQueryToEdit({
+      const editTaskData = {
+        text: task,
+        status: Number(checked)
+      };
 
       // const { status: answerStatus } = await post(
-      //   `/edit/${id}${getDeveloperNameQuery("Egor")}`,
-      //   editTaskFormData
-      // );
+      // `/tasks/${id}${getDeveloperNameQuery("Egor")}`,
+      console.log(editTaskData);
+      const answer = await post(`/task/${id}`, editTaskData);
       // if (answerStatus === "ok") {
       //   console.log("Task edited");
       // }
