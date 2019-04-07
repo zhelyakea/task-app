@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import PropTypes from "prop-types";
 import history from "services/history";
 
-import { AuthContext } from "components/App";
+import { AuthContext } from "model/Auth";
 
 import Button from "@material-ui/core/Button";
 

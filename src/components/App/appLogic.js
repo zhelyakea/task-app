@@ -1,9 +1,7 @@
 import React, { useCallback, useEffect, useReducer } from "react";
 import { loadState, removeState } from "services/localStorage";
 
-import reducer from "./model/reducer";
-import { LOG_IN, LOG_OUT } from "./model/constants";
-import initialState from "./model/initialState";
+import { initialState, reducer, LOG_IN, LOG_OUT } from "model/Auth";
 
 const AppLogic = WrappedComponent => () => {
   useEffect(() => {

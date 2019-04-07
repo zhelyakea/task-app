@@ -9,7 +9,7 @@ import Tooltip from "@material-ui/core/Tooltip";
 import EditIcon from "@material-ui/icons/Edit";
 
 import FormField from "components/FormField";
-import { AuthContext } from "components/App";
+import { AuthContext } from "model/Auth";
 
 const Task = ({
   username,

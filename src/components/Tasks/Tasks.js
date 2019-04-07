@@ -13,7 +13,7 @@ import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
 
 import Task from "components/Task";
-import { AuthContext } from "components/App";
+import { AuthContext } from "model/Auth";
 import { TasksContext } from "components/Tasks/tasksLogic";
 
 import styles from "./styles";
