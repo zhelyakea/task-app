@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useContext } from "react";
 import history from "services/history";
 import { saveState } from "services/localStorage";
-import { AuthContext } from "model/Auth";
+import { AuthContext } from "model/auth";
 
 const AuthLogic = WrappedComponent => () => {
   const { logIn } = useContext(AuthContext);

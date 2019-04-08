@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { HashRouter, Route, Switch } from "react-router-dom";
 
-import { AuthContext } from "model/Auth";
+import { AuthContext } from "model/auth";
 
 import Auth from "components/Auth";
 import MainPage from "components/MainPage";
