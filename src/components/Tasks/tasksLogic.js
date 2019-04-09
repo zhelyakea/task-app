@@ -54,11 +54,12 @@ const TasksLogic = WrappedComponent => () => {
   async function loadTaskList() {
     try {
       const {
-        data: { tasks }
+        data: { tasks, total_task_count }
       } = await API.graphql(graphqlOperation(GET_TASKS));
 
       setTasks(tasks);
       setLoaded(true);
+      setTotalTasksCount(total_task_count);
     } catch (error) {
       console.log(error);
     }
