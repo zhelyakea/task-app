@@ -20,8 +20,8 @@ import styles from "./styles";
 const Tasks = ({
   isAdmin,
   tasks,
-  addTasks,
-  editTasks,
+  addTask,
+  editTask,
   rowsPerPage,
   currentPage,
   statusDirection,
@@ -35,7 +35,7 @@ const Tasks = ({
 }) => {
   return (
     <>
-      <AddTask {...{ addTasks }} />
+      <AddTask {...{ addTask }} />
       <div style={styles.tableWrapper}>
         <Paper>
           <div style={styles.titleWrapper}>
@@ -94,7 +94,10 @@ const Tasks = ({
             </TableHead>
             <TableBody>
               {tasks.map(({ id, ...otherProps }) => (
-                <Task key={id} {...{ ...otherProps, id, currentPage }} />
+                <Task
+                  key={id}
+                  {...{ ...otherProps, id, currentPage, editTask }}
+                />
               ))}
             </TableBody>
           </Table>

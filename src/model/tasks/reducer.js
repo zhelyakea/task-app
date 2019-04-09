@@ -6,8 +6,16 @@ const reducer = (state, action) => {
       return [...state, action.payload];
     }
     case EDIT_TASK: {
-      console.log(action);
-      return [...state];
+      const {
+        payload: { id, status, text }
+      } = action;
+      const newTasks = state.map(({ id: editedId, ...other }) => {
+        if (id === editedId) {
+          return { ...other, id, status, text };
+        }
+        return { id: editedId, ...other };
+      });
+      return newTasks;
     }
     case SET_TASKS: {
       return action.payload;

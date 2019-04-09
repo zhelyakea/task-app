@@ -6,9 +6,9 @@ import React, {
   useEffect,
   useReducer
 } from "react";
+
 import { API, graphqlOperation } from "configs/graphQl";
 import ADD_TASK_QUERY from "graphql-querys/ADD_TASK";
-// import { initialState, reducer, ADD_TASK } from "model/tasks";
 
 // const AddTaskLogic = WrappedComponent => () => {
 //   const [name, setName] = useState("");
@@ -60,21 +60,20 @@ const AddTaskLogic = WrappedComponent =>
 
     createTaskHandler = async ({ name, email: inputedEmail, task }) => {
       try {
-        const answer = await API.graphql(
+        const {
+          data: {
+            addTask: { id, username, email, text, status }
+          }
+        } = await API.graphql(
           graphqlOperation(ADD_TASK_QUERY, {
             username: name,
             email: inputedEmail,
             text: task,
-            status: 0
+            status: false
           })
         );
-        const {
-          data: {
-            addTask: { id, username, email, test, status }
-          }
-        } = answer;
-        console.log("Task added!", id, username, email, test, status);
-        this.props.addTasks({ id, username, email, test, status });
+        console.log("Task added!", id, username, email, task, status);
+        this.props.addTask({ id, username, email, text, status });
         this.setState({});
       } catch (error) {
         throw new Error(error);

@@ -5,8 +5,8 @@ import React, {
   useEffect,
   useReducer
 } from "react";
-import { API, graphqlOperation } from "configs/graphQl";
 
+import { API, graphqlOperation } from "configs/graphQl";
 import GET_TASKS from "graphql-querys/GET_TASKS";
 
 import dispatchResolver from "resolvers/dispatchResolver";
@@ -34,11 +34,12 @@ const TasksLogic = WrappedComponent => () => {
 
   const [tasks, dispatch] = useReducer(reducer, initialState);
   const dispatchCallback = dispatchResolver(dispatch);
-  const addTasks = newTask => {
+
+  const addTask = newTask => {
     dispatchCallback(ADD_TASK, newTask);
   };
-  const editTasks = editedTask => {
-    dispatchCallback(EDIT_TASK, ADD_TASK);
+  const editTask = editedTask => {
+    dispatchCallback(EDIT_TASK, editedTask);
   };
   const setTasks = newTasks => {
     dispatchCallback(SET_TASKS, newTasks);
@@ -52,7 +53,7 @@ const TasksLogic = WrappedComponent => () => {
 
     if (page >= 0 && page <= totalTasksCount) {
       this.setState({ currentPage: page });
-      await this.loadTaskList(page);
+      // await this.loadTaskList(page);
     }
   });
   async function loadTaskList() {
@@ -71,10 +72,6 @@ const TasksLogic = WrappedComponent => () => {
   function sortTasks({ currentPage, value, name }) {
     const direction = value === "asc" ? "desc" : "asc";
     // this.setState({ [name]: direction });
-    loadTaskList(
-      currentPage,
-      `&sort_field=${name}&sort_direction=${direction}`
-    );
   }
 
   const sortByStatus = useCallback(() => {
@@ -92,6 +89,7 @@ const TasksLogic = WrappedComponent => () => {
       name: "name"
     });
   }, [currentPage, name, sortTasks]);
+
   const sortByEmail = useCallback(() => {
     sortTasks({
       currentPage,
@@ -99,6 +97,7 @@ const TasksLogic = WrappedComponent => () => {
       name: "email"
     });
   }, [currentPage, email, sortTasks]);
+
   if (!loaded) {
     return <Loading />;
   }
@@ -107,8 +106,8 @@ const TasksLogic = WrappedComponent => () => {
       {...{
         isAdmin,
         tasks,
-        addTasks,
-        editTasks,
+        addTask,
+        editTask,
         changePageHandler,
         sortByStatus,
         sortByName,

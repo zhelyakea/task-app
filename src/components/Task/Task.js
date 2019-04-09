@@ -16,7 +16,6 @@ const Task = ({
   email,
   text,
   status,
-  checked,
   checkTaskHandler,
   editTaskTextHandler,
   editTaskHandler,
@@ -27,7 +26,7 @@ const Task = ({
     <TableRow>
       <TableCell padding="checkbox">
         <Checkbox
-          checked={checked}
+          checked={status}
           onChange={checkTaskHandler}
           disabled={!isAdmin}
         />
@@ -63,7 +62,7 @@ Task.propTypes = {
   username: PropTypes.string,
   email: PropTypes.string,
   text: PropTypes.string,
-  status: PropTypes.number,
+  status: PropTypes.bool,
   isAdmin: PropTypes.bool,
   editTaskHandler: PropTypes.func
 };

@@ -5,7 +5,7 @@ const ADD_TASK = gql`
     $username: String
     $email: String
     $text: String
-    $status: Int
+    $status: Boolean
   ) {
     addTask(username: $username, email: $email, text: $text, status: $status) {
       id

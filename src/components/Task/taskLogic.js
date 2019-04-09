@@ -1,29 +1,42 @@
 import React, { Component } from "react";
 
+import { API, graphqlOperation } from "configs/graphQl";
+import EDIT_TASK from "graphql-querys/EDIT_TASK";
+
 const TaskLogic = WrappedTaskComponent =>
   class WrappedTaskLogic extends Component {
-    state = { checked: this.props.status, text: this.props.text };
+    state = { status: this.props.status, text: this.props.text };
     editTaskHandler = async () => {
       const {
-        state: { checked, text },
-        props: { id, editTasks }
+        state: { status, text },
+        props: { id: idFromProps, editTask }
       } = this;
-      console.log("edit task", id, checked, text);
-      // editTasks( {id, checked, text});
+      const {
+        data: {
+          editTask: { id }
+        }
+      } = await API.graphql(
+        graphqlOperation(EDIT_TASK, {
+          id: Number(idFromProps),
+          status,
+          text
+        })
+      );
+      editTask({ id, status, text });
     };
-    checkTask = checked => {
-      this.setState({ checked });
+    checkTask = status => {
+      this.setState({ status });
     };
     checkTaskHandler = () => {
-      const { checked } = this.state;
-      this.setState({ checked: !checked });
+      const { status } = this.state;
+      this.setState({ status: !status });
     };
     editTaskTextHandler = e => {
       this.setState({ text: e.target.value });
     };
     render() {
       const {
-        state: { checked, text },
+        state: { status, text },
         checkTaskHandler,
         editTaskTextHandler,
         editTaskHandler,
@@ -33,7 +46,7 @@ const TaskLogic = WrappedTaskComponent =>
         <WrappedTaskComponent
           {...{
             ...props,
-            checked,
+            status,
             text,
             checkTaskHandler,
             editTaskTextHandler,
