@@ -5,19 +5,26 @@ import React, {
   useEffect,
   useReducer
 } from "react";
-import { get } from "services/fetch";
+
+import Amplify, { API, graphqlOperation } from "aws-amplify";
+
+import address from "constants/address";
+import GET_TASKS from "./GET_TASKS";
+
 import dispatchResolver from "resolvers/dispatchResolver";
 import { AuthContext } from "model/auth";
 
 import { initialState, reducer, ADD_TASK, SET_TASKS } from "model/tasks";
 import Loading from "components/Loading";
 
+Amplify.configure({
+  API: {
+    graphql_endpoint: address
+  }
+});
+
 const TasksLogic = WrappedComponent => () => {
   const { isAdmin } = useContext(AuthContext);
-
-  useEffect(() => {
-    loadTaskList();
-  }, []);
 
   const [status, setStatus] = useState("acs");
   const [name, setName] = useState("");
@@ -32,6 +39,9 @@ const TasksLogic = WrappedComponent => () => {
   const setTasks = newTasks => {
     dispatchCallback(SET_TASKS, newTasks);
   };
+  useEffect(() => {
+    loadTaskList();
+  }, []);
 
   const changePageHandler = useCallback(async (e, page) => {
     const { totalTasksCount } = this.state;
@@ -41,24 +51,36 @@ const TasksLogic = WrappedComponent => () => {
       await this.loadTaskList(page);
     }
   });
-  async function loadTaskList(page, query = "") {
+  async function loadTaskList() {
     try {
       const {
-        tasksList: {
-          status,
-          message: { tasks, total_task_count }
-        }
-      } = await get(`/tasks`);
+        data: { tasks }
+      } = await API.graphql(graphqlOperation(GET_TASKS));
 
-      if (status === "ok") {
-        setTasks(tasks);
-        setLoaded(true);
-        setTotalTasksCount(total_task_count);
-      }
+      setTasks(tasks);
+      setLoaded(true);
     } catch (error) {
-      console.log("load failed", error);
+      console.log(error);
     }
   }
+  // async function loadTaskList(page, query = "") {
+  //   try {
+  //     const {
+  //       tasksList: {
+  //         status,
+  //         message: { tasks, total_task_count }
+  //       }
+  //     } = await get(`/tasks`);
+
+  //     if (status === "ok") {
+  //       setTasks(tasks);
+  //       setLoaded(true);
+  //       setTotalTasksCount(total_task_count);
+  //     }
+  //   } catch (error) {
+  //     console.log("load failed", error);
+  //   }
+  // }
   function sortTasks({ currentPage, value, name }) {
     const direction = value === "asc" ? "desc" : "asc";
     // this.setState({ [name]: direction });
@@ -90,29 +112,28 @@ const TasksLogic = WrappedComponent => () => {
       name: "email"
     });
   }, [currentPage, email, sortTasks]);
-
-  if (loaded) {
-    return (
-      <WrappedComponent
-        {...{
-          isAdmin,
-          tasks,
-          changePageHandler,
-          sortByStatus,
-          sortByName,
-          sortByEmail,
-          statusDirection: status,
-          nameDirection: name,
-          emailDirection: email,
-          rowsPerPage,
-          currentPage,
-          totalTasksCount,
-          loaded
-        }}
-      />
-    );
+  if (!loaded) {
+    return <Loading />;
   }
-  return <Loading />;
+  return (
+    <WrappedComponent
+      {...{
+        isAdmin,
+        tasks,
+        changePageHandler,
+        sortByStatus,
+        sortByName,
+        sortByEmail,
+        statusDirection: status,
+        nameDirection: name,
+        emailDirection: email,
+        rowsPerPage,
+        currentPage,
+        totalTasksCount,
+        loaded
+      }}
+    />
+  );
 };
 
 export default TasksLogic;
