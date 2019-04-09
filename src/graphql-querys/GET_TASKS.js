@@ -9,6 +9,7 @@ const GET_TASKS = gql`
       text
       status
     }
+    total_task_count
   }
 `;
 export default GET_TASKS;

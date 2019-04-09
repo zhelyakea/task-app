@@ -5,23 +5,21 @@ import React, {
   useEffect,
   useReducer
 } from "react";
+import { API, graphqlOperation } from "configs/graphQl";
 
-import Amplify, { API, graphqlOperation } from "aws-amplify";
-
-import address from "constants/address";
-import GET_TASKS from "./GET_TASKS";
+import GET_TASKS from "graphql-querys/GET_TASKS";
 
 import dispatchResolver from "resolvers/dispatchResolver";
 import { AuthContext } from "model/auth";
 
-import { initialState, reducer, ADD_TASK, SET_TASKS } from "model/tasks";
+import {
+  initialState,
+  reducer,
+  ADD_TASK,
+  EDIT_TASK,
+  SET_TASKS
+} from "model/tasks";
 import Loading from "components/Loading";
-
-Amplify.configure({
-  API: {
-    graphql_endpoint: address
-  }
-});
 
 const TasksLogic = WrappedComponent => () => {
   const { isAdmin } = useContext(AuthContext);
@@ -36,6 +34,12 @@ const TasksLogic = WrappedComponent => () => {
 
   const [tasks, dispatch] = useReducer(reducer, initialState);
   const dispatchCallback = dispatchResolver(dispatch);
+  const addTasks = newTask => {
+    dispatchCallback(ADD_TASK, newTask);
+  };
+  const editTasks = editedTask => {
+    dispatchCallback(EDIT_TASK, ADD_TASK);
+  };
   const setTasks = newTasks => {
     dispatchCallback(SET_TASKS, newTasks);
   };
@@ -61,27 +65,9 @@ const TasksLogic = WrappedComponent => () => {
       setLoaded(true);
       setTotalTasksCount(total_task_count);
     } catch (error) {
-      console.log(error);
+      throw new Error(error);
     }
   }
-  // async function loadTaskList(page, query = "") {
-  //   try {
-  //     const {
-  //       tasksList: {
-  //         status,
-  //         message: { tasks, total_task_count }
-  //       }
-  //     } = await get(`/tasks`);
-
-  //     if (status === "ok") {
-  //       setTasks(tasks);
-  //       setLoaded(true);
-  //       setTotalTasksCount(total_task_count);
-  //     }
-  //   } catch (error) {
-  //     console.log("load failed", error);
-  //   }
-  // }
   function sortTasks({ currentPage, value, name }) {
     const direction = value === "asc" ? "desc" : "asc";
     // this.setState({ [name]: direction });
@@ -121,6 +107,8 @@ const TasksLogic = WrappedComponent => () => {
       {...{
         isAdmin,
         tasks,
+        addTasks,
+        editTasks,
         changePageHandler,
         sortByStatus,
         sortByName,

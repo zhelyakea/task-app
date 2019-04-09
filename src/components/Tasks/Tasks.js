@@ -12,6 +12,7 @@ import TableSortLabel from "@material-ui/core/TableSortLabel";
 import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
 
+import AddTask from "components/AddTask";
 import Task from "components/Task";
 
 import styles from "./styles";
@@ -19,6 +20,8 @@ import styles from "./styles";
 const Tasks = ({
   isAdmin,
   tasks,
+  addTasks,
+  editTasks,
   rowsPerPage,
   currentPage,
   statusDirection,
@@ -31,84 +34,87 @@ const Tasks = ({
   sortByEmail
 }) => {
   return (
-    <div style={styles.tableWrapper}>
-      <Paper>
-        <div style={styles.titleWrapper}>
-          <Typography>Tasks</Typography>
-        </div>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <Tooltip title="Sort by Status">
-                <TableCell>
-                  <TableSortLabel
-                    active
-                    direction={statusDirection}
-                    onClick={sortByStatus}
-                  >
-                    Status
-                  </TableSortLabel>
-                </TableCell>
-              </Tooltip>
+    <>
+      <AddTask {...{ addTasks }} />
+      <div style={styles.tableWrapper}>
+        <Paper>
+          <div style={styles.titleWrapper}>
+            <Typography>Tasks</Typography>
+          </div>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <Tooltip title="Sort by Status">
+                  <TableCell>
+                    <TableSortLabel
+                      active
+                      direction={statusDirection}
+                      onClick={sortByStatus}
+                    >
+                      Status
+                    </TableSortLabel>
+                  </TableCell>
+                </Tooltip>
 
-              <Tooltip title="Sort by User Name">
+                <Tooltip title="Sort by User Name">
+                  <TableCell>
+                    <TableSortLabel
+                      active
+                      direction={nameDirection}
+                      onClick={sortByName}
+                    >
+                      User Name
+                    </TableSortLabel>
+                  </TableCell>
+                </Tooltip>
+                <Tooltip title="Sort by Email">
+                  <TableCell>
+                    <TableSortLabel
+                      active
+                      direction={emailDirection}
+                      onClick={sortByEmail}
+                    >
+                      Email
+                    </TableSortLabel>
+                  </TableCell>
+                </Tooltip>
                 <TableCell>
-                  <TableSortLabel
-                    active
-                    direction={nameDirection}
-                    onClick={sortByName}
-                  >
-                    User Name
-                  </TableSortLabel>
-                </TableCell>
-              </Tooltip>
-              <Tooltip title="Sort by Email">
-                <TableCell>
-                  <TableSortLabel
-                    active
-                    direction={emailDirection}
-                    onClick={sortByEmail}
-                  >
-                    Email
-                  </TableSortLabel>
-                </TableCell>
-              </Tooltip>
-              <TableCell>
-                <TableSortLabel active={false} disabled>
-                  Task Text
-                </TableSortLabel>
-              </TableCell>
-              <TableCell>
-                {isAdmin && (
                   <TableSortLabel active={false} disabled>
-                    Edit
+                    Task Text
                   </TableSortLabel>
-                )}
-              </TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {tasks.map(({ id, ...otherProps }) => (
-              <Task key={id} {...{ ...otherProps, id, currentPage }} />
-            ))}
-          </TableBody>
-        </Table>
-        <TablePagination
-          rowsPerPageOptions={[rowsPerPage]}
-          component="div"
-          count={totalTasksCount}
-          rowsPerPage={rowsPerPage}
-          page={currentPage}
-          backIconButtonProps={{
-            "aria-label": "Previous Page"
-          }}
-          nextIconButtonProps={{
-            "aria-label": "Next Page"
-          }}
-          onChangePage={changePageHandler}
-        />
-      </Paper>
-    </div>
+                </TableCell>
+                <TableCell>
+                  {isAdmin && (
+                    <TableSortLabel active={false} disabled>
+                      Edit
+                    </TableSortLabel>
+                  )}
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {tasks.map(({ id, ...otherProps }) => (
+                <Task key={id} {...{ ...otherProps, id, currentPage }} />
+              ))}
+            </TableBody>
+          </Table>
+          <TablePagination
+            rowsPerPageOptions={[rowsPerPage]}
+            component="div"
+            count={totalTasksCount}
+            rowsPerPage={rowsPerPage}
+            page={currentPage}
+            backIconButtonProps={{
+              "aria-label": "Previous Page"
+            }}
+            nextIconButtonProps={{
+              "aria-label": "Next Page"
+            }}
+            onChangePage={changePageHandler}
+          />
+        </Paper>
+      </div>
+    </>
   );
 };
 

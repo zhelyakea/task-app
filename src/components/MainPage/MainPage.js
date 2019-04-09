@@ -6,7 +6,6 @@ import { AuthContext } from "model/auth";
 
 import Button from "@material-ui/core/Button";
 
-import AddTask from "components/AddTask";
 import Tasks from "components/Tasks";
 
 import styles from "./styles";
@@ -42,7 +41,6 @@ const MainPage = () => {
   return (
     <div style={styles.mainWrapper}>
       <div style={styles.logOutWrapper}>{renderLoginButton()}</div>
-      <AddTask />
       <Tasks />
     </div>
   );

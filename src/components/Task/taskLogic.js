@@ -1,32 +1,15 @@
 import React, { Component } from "react";
 
-import getDeveloperNameQuery from "helpers/getDeveloperNameQuery";
-import { post } from "services/fetch";
-import getQueryToEdit from "./getQueryToEdit";
-
 const TaskLogic = WrappedTaskComponent =>
   class WrappedTaskLogic extends Component {
-    state = { checked: this.props.status, task: this.props.text };
+    state = { checked: this.props.status, text: this.props.text };
     editTaskHandler = async () => {
       const {
-        state: { checked, task },
-        props: { id }
+        state: { checked, text },
+        props: { id, editTasks }
       } = this;
-      // const keys = ["text", "status"];
-
-      // const editTaskFormData = getQueryToEdit({
-      const editTaskData = {
-        text: task,
-        status: Number(checked)
-      };
-
-      // const { status: answerStatus } = await post(
-      // `/tasks/${id}${getDeveloperNameQuery("Egor")}`,
-      console.log(editTaskData);
-      const answer = await post(`/task/${id}`, editTaskData);
-      // if (answerStatus === "ok") {
-      //   console.log("Task edited");
-      // }
+      console.log("edit task", id, checked, text);
+      // editTasks( {id, checked, text});
     };
     checkTask = checked => {
       this.setState({ checked });
@@ -36,11 +19,11 @@ const TaskLogic = WrappedTaskComponent =>
       this.setState({ checked: !checked });
     };
     editTaskTextHandler = e => {
-      this.setState({ task: e.target.value });
+      this.setState({ text: e.target.value });
     };
     render() {
       const {
-        state: { checked },
+        state: { checked, text },
         checkTaskHandler,
         editTaskTextHandler,
         editTaskHandler,
@@ -51,6 +34,7 @@ const TaskLogic = WrappedTaskComponent =>
           {...{
             ...props,
             checked,
+            text,
             checkTaskHandler,
             editTaskTextHandler,
             editTaskHandler

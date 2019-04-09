@@ -41,6 +41,7 @@ const Task = ({
             <FormField
               id="task"
               label="Task"
+              value={text}
               placeholder="Edit task text..."
               onChange={editTaskTextHandler}
             />

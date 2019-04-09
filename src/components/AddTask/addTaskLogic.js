@@ -1,9 +1,20 @@
-import React, { Component } from "react";
-import getDeveloperNameQuery from "helpers/getDeveloperNameQuery";
-import formDataFields from "helpers/formDataFields";
+import React, {
+  Component,
+  useState,
+  useContext,
+  useCallback,
+  useEffect,
+  useReducer
+} from "react";
+import { API, graphqlOperation } from "configs/graphQl";
+import ADD_TASK_QUERY from "graphql-querys/ADD_TASK";
+// import { initialState, reducer, ADD_TASK } from "model/tasks";
 
-import { post } from "services/fetch";
-
+// const AddTaskLogic = WrappedComponent => () => {
+//   const [name, setName] = useState("");
+//   const [email, setEmail] = useEmail("");
+//   const [task, setTask] = useState("");
+// };
 const AddTaskLogic = WrappedComponent =>
   class WrappedAddTaskLogic extends Component {
     state = {
@@ -47,18 +58,27 @@ const AddTaskLogic = WrappedComponent =>
       this.setState({ task: e.target.value });
     };
 
-    createTaskHandler = ({ name, email, task }) => {
-      const addTaskFormData = formDataFields({
-        data: { username: name, email, text: task },
-        keys: ["username", "email", "text"]
-      });
-
-      post(`/create${getDeveloperNameQuery("Egor")}`, addTaskFormData)
-        .then(() => {
-          console.log("Task added!");
-          this.setState({});
-        })
-        .catch(error => console.log(error));
+    createTaskHandler = async ({ name, email: inputedEmail, task }) => {
+      try {
+        const answer = await API.graphql(
+          graphqlOperation(ADD_TASK_QUERY, {
+            username: name,
+            email: inputedEmail,
+            text: task,
+            status: 0
+          })
+        );
+        const {
+          data: {
+            addTask: { id, username, email, test, status }
+          }
+        } = answer;
+        console.log("Task added!", id, username, email, test, status);
+        this.props.addTasks({ id, username, email, test, status });
+        this.setState({});
+      } catch (error) {
+        throw new Error(error);
+      }
     };
 
     render() {
